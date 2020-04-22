@@ -22,9 +22,9 @@ func TestPopulateEvents(t *testing.T) {
 		})
 	assert.NoError(t, err)
 	for _, eve := range events {
-		fmt.Printf("%+v\n", eve)
+		fmt.Printf("actual: %+v\n", eve)
 	}
-	assert.Equal(t, []*event.Event{
+	expected := []*event.Event{
 		{
 			EventSource: "test",
 			EventType:   event.Create,
@@ -43,5 +43,17 @@ func TestPopulateEvents(t *testing.T) {
 			Key:         "k4",
 			Value:       "v4",
 		},
-	}, events)
+	}
+
+	for _, eve := range expected {
+		fmt.Printf("expected: %+v\n", eve)
+	}
+
+	assert.Equal(t, len(expected), len(events))
+
+	for i := 0; i < len(expected); i++ {
+		assert.Equal(t, expected[i].EventSource, events[i].EventSource)
+		assert.Equal(t, expected[i].Key, events[i].Key)
+	}
+
 }
